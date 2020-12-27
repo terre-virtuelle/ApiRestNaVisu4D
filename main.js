@@ -2,7 +2,7 @@ const express   = require('express');
 const WebSocket = require('ws');
 
 var HOSTNAME = 'localhost';
-var PORT_EXT = 3000;
+var PORT_EXT = 3003;
 var PORT_INT = 9898;
 
 var clients = [];
