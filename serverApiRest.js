@@ -1,28 +1,30 @@
-const express   = require('express');
+const express = require('express');
 const WebSocket = require('ws');
 
 var HOSTNAME = 'localhost';
 var PORT_EXT = 3003;
 var PORT_INT = 9898;
 
-var clients = [];
+var clientsNaVisu = [];
+var app = express();
 
 //WebSocket part
 const wss = new WebSocket.Server({port: PORT_INT});
 
 wss.on('connection', ws => {
     ws.on('message', message => {
-        console.log(`Received message => ${message}`);
+        // console.log(`Received message => ${message}`);
     });
     ws.send('connected');
-    clients.push(ws);
+    clientsNaVisu.push(ws);
 });
 
 //API REST part
 var CONTROL = '/control';
+var INFO = '/info';
 var router = express.Router();
 var bodyParser = require("body-parser");
-var app = express();
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -32,9 +34,10 @@ app.listen(PORT_EXT, HOSTNAME, function () {
     console.log("Server listen  http://" + HOSTNAME + ":" + PORT_EXT);
 });
 
+
 router.route(CONTROL)
         .get(function (req, res) {
-         //TODO
+            //TODO
         })
         .post(function (req, res) {
             res.json({message: "",
@@ -53,11 +56,33 @@ router.route(CONTROL)
                 pitch: req.query.pitch,
                 roll: req.query.roll
             };
-            clients.forEach(element => element.send(JSON.stringify(mes)));
+            clientsNaVisu.forEach(element => element.send(JSON.stringify(mes)));
             res.json(mes);
         })
         .delete(function (req, res) {
             res.json({message: "Suppression ", methode: req.method});
+        });
+router.route(INFO)
+        .put(function (req, res) {
+
+        })
+        .post(function (req, res) {
+            res.json({message: "",
+                nom: req.body.nom,
+                methode: req.method});
+        })
+        .get(function (req, res, next) {
+            var mes = {
+                cmd: req.query.cmd,
+                origin: req.query.origin,
+                target: req.query.target
+            };
+          //  clientsNaVisu.forEach(element => element.send(JSON.stringify(mes)));
+            //Envoi message au client  depuis le premier client NaVisu
+            clientsNaVisu[0].send(JSON.stringify(mes));
+            clientsNaVisu[0].on('message', mes => {
+                res.json(mes);
+            });
         });
 
 //exemple curl PUT
