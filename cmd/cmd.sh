@@ -1,0 +1,1 @@
+cdo sellonlatbox,-3.3471010628720994,-0.9379396532968742,49.06739716429488,50.1326974259092 /home/serge/Data/developement_2020/ApiRestServerNaVisu4D/data/HYDRODYN-SURF_HYCOM3D-SURF_R1000_MANGASC_20211221.nc /home/serge/Data/developement_2020/ApiRestServerNaVisu4D/data/out.nc

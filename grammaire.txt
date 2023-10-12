@@ -1,0 +1,14 @@
+Grammaire ApiRest
+Control
+example :  r = requests.put('http://localhost:3003/control?cmd=moveTo&origin=SMAUG&target=ship&timestamp=' + time + '&latitude='+ lat +'&longitude=' + lon + '&altitude=0&heading=511&pitch=0.0&roll=0.0')
+
+
+control = {origin, timestamp*, cmd, target}
+origin = String
+timestamp = String ISO
+cmd = {position, flyTo, moveTo, track, localTrack, read, question, response, validate}
+target = {camera, ship, file, Qx, Rx, true, false}
+param = {{latitude,longitude},[{altitude,heading,pitch,roll}],[{fileName,mobileName}]}
+
+
+r = requests.put('http://localhost:3003/control?cmd=moveTo&origin=SMAUG&target=ship&timestamp=' + time + '&latitude='+ lat +'&longitude=' + lon + '&altitude=0&heading=511&pitch=0.0&roll=0.0&read=scenario1&question=1&validate=true&response=1')
